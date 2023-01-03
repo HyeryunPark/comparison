@@ -17,7 +17,8 @@ class ComparisonActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityComparisonBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_comparison)
+//        setContentView(R.layout.activity_comparison)
+        setContentView(binding.root)
 
         // 툴바 선언
         val toolbar = findViewById<Toolbar>(R.id.toolbar_comparison)
@@ -33,7 +34,7 @@ class ComparisonActivity : AppCompatActivity() {
         Log.e("initViewPager", "시자아아아아아아ㅏㄱ")
 
         //ViewPager2 Adapter 셋팅
-        var viewPager2Adapter = ViewPager2Adapter(this)
+        val viewPager2Adapter = ViewPager2Adapter(this)
         viewPager2Adapter.addFragment(Tab1Fragment())
         viewPager2Adapter.addFragment(Tab2Fragment())
         viewPager2Adapter.addFragment(Tab3Fragment())
@@ -55,9 +56,9 @@ class ComparisonActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tlNavigationView, binding.vpViewpagerMain) { tab, position ->
             Log.e("TabLayoutMediator", "ViewPager position: $position")
             when (position) {
-                0 -> tab.text = "Tab1"
-                1 -> tab.text = "Tab2"
-                2 -> tab.text = "Tab3"
+                0 -> tab.text = "가격비교"
+                1 -> tab.text = "가격변동"
+                2 -> tab.text = "상품후기"
             }
         }.attach()
     }
