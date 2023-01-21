@@ -1,6 +1,5 @@
 package com.example.comparison
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.comparison.MainAdapter.ViewHolder
-import com.example.comparison.databinding.ItemMainBinding
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     var datas = mutableListOf<MainData>()
