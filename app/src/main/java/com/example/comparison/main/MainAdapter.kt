@@ -1,4 +1,4 @@
-package com.example.comparison
+package com.example.comparison.main
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.comparison.R
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     var datas = mutableListOf<MainData>()

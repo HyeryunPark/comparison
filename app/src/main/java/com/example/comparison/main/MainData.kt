@@ -1,4 +1,4 @@
-package com.example.comparison
+package com.example.comparison.main
 
 data class MainData(
     val img: Int,

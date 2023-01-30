@@ -1,19 +1,21 @@
-package com.example.comparison
+package com.example.comparison.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.comparison.comparison.ComparisonActivity
+import com.example.comparison.R
+import com.example.comparison.base.BaseActivity
 import com.example.comparison.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity(), MainContract.View {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MainAdapter
 
+    private lateinit var mainPresenter: MainContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +24,9 @@ class MainActivity : AppCompatActivity() {
         // binding 방식으로 개발했으면 setContentView도 binding.root로 변경해야함
         setContentView(binding.root)
 
-        //
+        mainPresenter.setView(this)
+
+//
         val search_view = findViewById<SearchView>(R.id.search_view)
         search_view.setOnClickListener {
             var intent = Intent(this, ComparisonActivity::class.java)
@@ -31,7 +35,19 @@ class MainActivity : AppCompatActivity() {
 
         // recyclerview
         initRecyclerView()
+
+
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainPresenter.dropView()
+    }
+
+    override fun initPresenter() {
+        mainPresenter = MainPresenter()
+    }
+
 
     private fun initRecyclerView() {
         adapter = MainAdapter()
@@ -45,6 +61,14 @@ class MainActivity : AppCompatActivity() {
         binding.rvMain.layoutManager = GridLayoutManager(this@MainActivity, 3)
         binding.rvMain.adapter = this@MainActivity.adapter
 
+    }
+
+    override fun showError(error: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showToastMessage(msg: String) {
+        TODO("Not yet implemented")
     }
 
 }

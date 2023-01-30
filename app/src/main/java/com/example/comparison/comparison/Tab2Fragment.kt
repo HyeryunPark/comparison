@@ -1,4 +1,4 @@
-package com.example.comparison
+package com.example.comparison.comparison
 
 import android.graphics.Color
 import android.os.Bundle

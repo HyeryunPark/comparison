@@ -1,4 +1,4 @@
-package com.example.comparison
+package com.example.comparison.comparison
 
 import android.os.Bundle
 import android.view.LayoutInflater

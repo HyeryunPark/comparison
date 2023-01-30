@@ -1,4 +1,4 @@
-package com.example.comparison
+package com.example.comparison.comparison
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,19 +6,25 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
+import com.example.comparison.*
+import com.example.comparison.base.BaseActivity
 import com.example.comparison.databinding.ActivityComparisonBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 
 // ComparisonActivity.kt : 가격비교,가격변동,상품후기 등을 보여주는 페이지 (ViewPager2사용)
-class ComparisonActivity : AppCompatActivity() {
+class ComparisonActivity : BaseActivity(), ComparisonContract.View {
     lateinit var binding: ActivityComparisonBinding
+
+    private lateinit var comparisonPresenter: ComparisonContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityComparisonBinding.inflate(layoutInflater)
 //        setContentView(R.layout.activity_comparison)
         setContentView(binding.root)
+
+        comparisonPresenter.setView(this)
 
         // 툴바 선언
         val toolbar = findViewById<Toolbar>(R.id.toolbar_comparison)
@@ -28,6 +34,15 @@ class ComparisonActivity : AppCompatActivity() {
         // ViewPager2
         initViewPager()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        comparisonPresenter.dropView()
+    }
+
+    override fun initPresenter() {
+        comparisonPresenter = ComparisonPresenter()
     }
 
     private fun initViewPager() {
@@ -42,10 +57,10 @@ class ComparisonActivity : AppCompatActivity() {
         //Adapter 연결
         binding.vpViewpagerMain.apply {
             adapter = viewPager2Adapter
-            Log.e("adapter","연결되냐고")
+            Log.e("adapter", "연결되냐고")
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
-                    Log.e("adapter","onPageSelected $position")
+                    Log.e("adapter", "onPageSelected $position")
 
                     super.onPageSelected(position)
                 }
@@ -69,5 +84,13 @@ class ComparisonActivity : AppCompatActivity() {
             android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun showError(error: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showToastMessage(msg: String) {
+        TODO("Not yet implemented")
     }
 }

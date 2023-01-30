@@ -1,4 +1,4 @@
-package com.example.comparison
+package com.example.comparison.comparison
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.comparison.databinding.FragmentTab3Binding
 
 // Tab3Fragment.kt : 상품후기 탭(product review)

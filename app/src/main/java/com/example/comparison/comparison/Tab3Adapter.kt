@@ -1,4 +1,4 @@
-package com.example.comparison
+package com.example.comparison.comparison
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.comparison.R
 
 class Tab3Adapter : RecyclerView.Adapter<Tab3Adapter.ViewHolder>() {
     private val list = listOf<Int>(1, 2, 3, 4, 5, 6)
