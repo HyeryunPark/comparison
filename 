@@ -1,0 +1,29 @@
+[33mcommit 5287806f77eef62de2671f06dca3db5ba8f8786f[m[33m ([m[1;36mHEAD -> [m[1;32mview[m[33m)[m
+Author: hyeryun <qkrgprus123@gmail.com>
+Date:   Mon Jan 9 22:00:41 2023 +0900
+
+    가격변동탭 MpAndroidChart LineChart
+
+[33mcommit 094d6e74cf19b156876eff2dd47aca40251bee93[m
+Author: hyeryun <qkrgprus123@gmail.com>
+Date:   Tue Jan 3 20:54:37 2023 +0900
+
+    update viewpager
+
+[33mcommit 113b7695eec9a4f0fbe368e2083db6b5b7085263[m
+Author: hyeryun <qkrgprus123@gmail.com>
+Date:   Tue Jan 3 20:30:42 2023 +0900
+
+    create mainview, viewpager2
+
+[33mcommit 5375bb5563e36e2bed7c86b273c5f751f381684f[m
+Author: hyeryun <qkrgprus123@gmail.com>
+Date:   Mon Jan 2 17:32:13 2023 +0900
+
+    view first commit
+
+[33mcommit c91a8fd93e7cc335d0acbb24f09722955eb2fbc7[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: hyeryun <qkrgprus123@gmail.com>
+Date:   Thu Dec 29 20:40:03 2022 +0900
+
+    initial commit
