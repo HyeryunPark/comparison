@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.comparison.databinding.FragmentTab1Binding
 
 
@@ -12,6 +13,8 @@ import com.example.comparison.databinding.FragmentTab1Binding
 class Tab1Fragment : Fragment() {
     private var _binding: FragmentTab1Binding? = null
     private val binding get() = _binding!!
+
+    private lateinit var adapter: Tab1Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,19 @@ class Tab1Fragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentTab1Binding.inflate(inflater, container, false)
+
+        initRecyclerView()
+
         return binding.root
     }
+
+    // recyclerview
+    private fun initRecyclerView() {
+        adapter = Tab1Adapter()
+
+        binding.rvTab1.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.rvTab1.adapter = this@Tab1Fragment.adapter
+
+    }
+
 }
