@@ -5,3 +5,4 @@ data class MainData(
     val name: String,
     val price: Int
 )
+
