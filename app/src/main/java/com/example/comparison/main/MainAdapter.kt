@@ -1,13 +1,18 @@
 package com.example.comparison.main
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.comparison.R
+import com.example.comparison.comparison.ComparisonActivity
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     var datas = mutableListOf<MainData>()
@@ -23,6 +28,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.bind(datas[position])
+
     }
 
     override fun getItemCount(): Int {
@@ -41,6 +47,19 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 //            binding.itemIv = item.img
             item_tv_name.text = item.name
             item_tv_price.text = item.price.toString()
+
+            itemView.setOnClickListener {
+                Log.e("item click!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", item.name+", "+item.price.toString())
+
+                /*val intent = Intent(itemView.context, ComparisonActivity::class.java)
+                intent.putExtra("data_name", item.name)
+                intent.putExtra("data_price", item.price)
+                startActivity(itemView.context, intent, null)*/
+
+                Intent(itemView.context, ComparisonActivity::class.java).apply {
+                    putExtra("data", item)
+                }.run { itemView.context.startActivity(this) }
+            }
         }
     }
 }

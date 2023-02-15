@@ -99,6 +99,17 @@ class MainActivity : BaseActivity(), MainContract.View {
             add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름3", price = 40000))
             add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름4", price = 5000))
             add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름5", price = 6000))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름1", price = 200))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름2", price = 30000))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름3", price = 40000))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름4", price = 5000))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름5", price = 6000))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름1", price = 200))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름2", price = 30000))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름3", price = 40000))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름4", price = 5000))
+            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름5", price = 6000))
+
         }
         binding.rvMain.layoutManager = GridLayoutManager(this@MainActivity, 3)
         binding.rvMain.adapter = this@MainActivity.adapter

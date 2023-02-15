@@ -60,14 +60,18 @@
         android:id="@+id/tl_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:theme="@style/TabTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:tabIndicatorFullWidth="false"
+        app:tabTextAppearance="@style/TabTextBold" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_viewpager_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/quick_silver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -19,4 +19,20 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <!-- TabTheme  -->
+    <style name="TabTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#4f953b</item>                       <!-- 배경 -->
+        <item name="android:textColorPrimary">@color/rifle_green</item>     <!-- 탭바 선택된 텍스트 -->
+        <item name="android:textColorSecondary">@color/philippine_gray</item>       <!-- 탭바 텍스트 -->
+        <item name="colorAccent">@color/rifle_green</item>                  <!-- 하단 움직이는 바 -->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- TabTextBold  -->
+
+    <style name="TabTextBold" parent="TextAppearance.Design.Tab">
+        <!--            <item name="android:textSize">16sp</item>-->
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
