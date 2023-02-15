@@ -2,6 +2,7 @@ package com.example.comparison.main
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.comparison.comparison.ComparisonActivity
 import com.example.comparison.R
@@ -35,8 +37,13 @@ class MainActivity : BaseActivity(), MainContract.View {
     private lateinit var retrofitInterface: RetrofitInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // setTheme: android12 이전 splash screen
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        // installSplashScreen() : android12 이후 splash screen api 사용
+        installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
+
 //        setContentView(R.layout.activity_main)
         // binding 방식으로 개발했으면 setContentView도 binding.root로 변경해야함
         setContentView(binding.root)
@@ -59,7 +66,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                 .setView(et)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
                     Toast.makeText(this, et.text, Toast.LENGTH_SHORT).show()
-                    Log.e("사용자가 입력한 url: ",et.text.toString())
+                    Log.e("사용자가 입력한 url: ", et.text.toString())
                 })
             builder.show()
         }
@@ -125,6 +132,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         })
 
     }
+
 
     override fun showError(error: String) {
         TODO("Not yet implemented")

@@ -14,5 +14,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!--  Splash Screen (android12 이전은 SplashScreen API 지원하지 않으므로 별도의 처리 필요) -->
+    <style name="AppTheme.SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
 
 </resources>
