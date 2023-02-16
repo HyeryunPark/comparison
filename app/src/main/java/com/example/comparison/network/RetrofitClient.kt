@@ -9,7 +9,7 @@ object RetrofitClient {
 
     private var instance: Retrofit? = null
 
-    private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
+    private const val BASE_URL = "https://port-0-node-3a9t2ble0n86ua.sel3.cloudtype.app/"
 
     // SingleTon - 인스턴스 재생성 방지를 위한 싱글톤 패턴 사용
     fun getInstance(): Retrofit {

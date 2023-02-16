@@ -32,7 +32,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        Log.e("메인어뎁터", "getItemCount $datas.size")
+//        Log.e("메인어뎁터", "getItemCount $datas.size")
         return datas.size
     }
 

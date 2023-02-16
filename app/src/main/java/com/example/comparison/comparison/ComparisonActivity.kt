@@ -10,6 +10,7 @@ import com.example.comparison.*
 import com.example.comparison.base.BaseActivity
 import com.example.comparison.databinding.ActivityComparisonBinding
 import com.example.comparison.main.MainData
+import com.example.comparison.main.PostData
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -38,10 +39,15 @@ class ComparisonActivity : BaseActivity(), ComparisonContract.View {
         initViewPager()
 
         // intent 로 넘어온 값
-        datas = intent.getSerializableExtra("data") as MainData
-        Log.e("인텐트 값 넘어왔니", datas.toString())
-        binding.tvName.text = datas.name
-        binding.tvPrice.text = datas.price.toString()
+        /*       datas = intent.getSerializableExtra("data") as MainData
+               Log.e("인텐트 값 넘어왔니", datas.toString())
+               binding.tvName.text = datas.name
+               binding.tvPrice.text = datas.price.toString()*/
+
+        val price = intent.getStringExtra("price")
+        Log.e("인텐트 값 price : ", price.toString())
+        binding.tvPrice.text = price
+
 
     }
 

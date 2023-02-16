@@ -1,5 +1,7 @@
 package com.example.comparison.main
 
+import android.content.Context
+import android.text.Editable
 import com.example.comparison.base.BasePresenter
 import com.example.comparison.base.BaseView
 
@@ -8,11 +10,14 @@ interface MainContract {
 
     interface View : BaseView {
 
+        fun setFloatingButton()
+        fun sendDataNextView(price: String)
 
     }
 
     interface Presenter : BasePresenter<View> {
 
+        fun loadData(p_code: String)
 
     }
 

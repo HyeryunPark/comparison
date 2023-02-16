@@ -3,17 +3,11 @@ package com.example.comparison.main
 import com.google.gson.annotations.SerializedName
 
 data class PostData(
-    @SerializedName("url")
-    val url:String = "",
+    @SerializedName("price")
+    val price: String = "",
+    @SerializedName("img_src")
+    val img_src: String = ""
 
-    @SerializedName("userId")
-    val userId: Int = 0,
-    @SerializedName("id")
-    val id: Int = 0,
-    @SerializedName("title")
-    val title: String = "",
-    @SerializedName("body")
-    val body:String = ""
 )
 
 
