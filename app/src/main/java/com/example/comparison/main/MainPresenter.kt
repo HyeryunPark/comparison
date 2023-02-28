@@ -29,7 +29,7 @@ class MainPresenter : MainContract.Presenter {
         mainView = null
     }
 
-    override fun loadData(p_code: Int) {
+    /*override fun loadData(p_code: Int) {
         val retrofit: Retrofit = RetrofitClient.getInstance()
         val retrofitInterface: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
 
@@ -40,7 +40,7 @@ class MainPresenter : MainContract.Presenter {
 
                     Log.e("onResponse 성공: ", Gson().toJson(response.body()))
 
-                    /* val body = response.body()
+                    *//* val body = response.body()
                      body?.let {
                          for (i in 0 until body.size) {
                              var dataList: PostData = PostData()
@@ -55,9 +55,40 @@ class MainPresenter : MainContract.Presenter {
                              Log.e("get dataList: ", dataList.name)
                              addData(mainInfo = addDataList)
                          }
-                     }*/
+                     }*//*
 //                    mainView!!.sendDataNextView(price = response.body()?.price.toString(), img = response.body()?.img_src.toString())
                     addData(response.body()!!)
+
+                } else {
+                    // onResponse 가 무조건 성공 응답이 아니기에 확인 필요 (응답 코드 3xx, 4xx 호출)
+                    Log.e("onResponse 실패: ", "")
+                }
+            }
+
+            override fun onFailure(call: Call<MainInfo>, t: Throwable) {
+                // onFailure 통신 실패시 Callback ( 인터넷 끊김, 예외 발생 등 시스템적인 이유 )
+                Log.e("onFailure: ", t.toString())
+            }
+
+        })
+    }*/
+
+    override fun loadData(p_url: String) {
+        val retrofit: Retrofit = RetrofitClient.getInstance()
+        val retrofitInterface: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
+
+        retrofitInterface.getData(p_url).enqueue(object : Callback<MainInfo> {
+            override fun onResponse(call: Call<MainInfo>, response: Response<MainInfo>) {
+                if (response.isSuccessful) {
+                    // onResponse 통신 성공시 Callback ( 메인스레드에서 작업하는 부분 (UI 작업 가능))
+                    Log.e("onResponse 성공: ", Gson().toJson(response.body()))
+
+                    addData(response.body()!!)
+                    /*mainView?.sendDataNextView(
+                        img = response.body()!!.img_src,
+                        name = response.body()!!.name,
+                        price = response.body()!!.price
+                    )*/
 
                 } else {
                     // onResponse 가 무조건 성공 응답이 아니기에 확인 필요 (응답 코드 3xx, 4xx 호출)

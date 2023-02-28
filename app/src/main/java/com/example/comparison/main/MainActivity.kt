@@ -134,9 +134,12 @@ class MainActivity : BaseActivity(), MainContract.View {
                 .setTitle("상품 url을 입력해주세요.")
                 .setView(et)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-
+                    val splitUrl = et.text.split("/")
+                    val p_url = splitUrl[3]
+                    Log.e("splitUrl[3] :", p_url)
                     Log.e("사용자가 입력한 url: ", et.text.toString())
-                    mainPresenter.loadData(et.text.toString().toInt())
+//                    mainPresenter.loadData(et.text.toString().toInt())
+                    mainPresenter.loadData(p_url)
 
                 })
             builder.show()
@@ -168,11 +171,12 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    override fun sendDataNextView(price: String, img: String) {
-        val intentPrice = Intent(this, ComparisonActivity::class.java)
-        intentPrice.putExtra("price", price)
-        intentPrice.putExtra("img", img)
-        startActivity(intentPrice)
+    override fun sendDataNextView(img: String, name: String, price: String) {
+        val intentData = Intent(this, ComparisonActivity::class.java)
+        intentData.putExtra("img", img)
+        intentData.putExtra("name", name)
+        intentData.putExtra("price", price)
+        startActivity(intentData)
 
     }
 
@@ -183,10 +187,12 @@ class MainActivity : BaseActivity(), MainContract.View {
 
             override fun onItemClick(view: View, position: Int) {
                 val intent = Intent(this@MainActivity, ComparisonActivity::class.java)
-//                intent.putExtra("data", adapter.datas[position])
+                // intent.putExtra("data", adapter.datas[position])
+                intent.putExtra("img", adapter.dataList[position].img_src)
+                intent.putExtra("name", adapter.dataList[position].name)
+                intent.putExtra("price", adapter.dataList[position].price)
                 startActivity(intent)
 
-//                Log.e("item click", "datas[$position]${adapter.datas[position]}")
             }
 
             override fun onDeleteClick(view: View, position: Int) {

@@ -40,18 +40,13 @@ class ComparisonActivity : BaseActivity(), ComparisonContract.View {
         initViewPager()
 
         // intent 로 넘어온 값
-        datas = intent.getSerializableExtra("data") as MainData
-        Log.e("인텐트 값 넘어왔니", datas.toString())
-        binding.tvName.text = datas.name
-        binding.tvPrice.text = datas.price.toString()
-
-/*        val price = intent.getStringExtra("price")
         val img = intent.getStringExtra("img")
-        Log.e("인텐트 값 price : ", price.toString())
-        Log.e("인텐트 값 img : ", img.toString())
+        val name = intent.getStringExtra("name")
+        val price = intent.getStringExtra("price")
+        Log.e("넘어온 intent", img.toString())
+        Glide.with(this).load(img).into(binding.ivComparison)
+        binding.tvName.text = name
         binding.tvPrice.text = price
-        Glide.with(this).load(img).into(binding.ivComparison)*/
-
 
     }
 

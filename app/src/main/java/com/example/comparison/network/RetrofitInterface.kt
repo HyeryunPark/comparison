@@ -18,8 +18,10 @@ interface RetrofitInterface {
 
 //    https://port-0-node-3a9t2ble0n86ua.sel3.cloudtype.app/crawl?pcode='상품번호'
 //    https://port-0-node-3a9t2ble0n86ua.sel3.cloudtype.app/crawl?p_url='상품 url'
+/*    @GET("crawl")
+    fun getData(@Query("pcode") p_code: Int): Call<MainInfo>*/
     @GET("crawl")
-    fun getData(@Query("pcode") p_code: Int): Call<MainInfo>
+    fun getData(@Query("p_url") p_url: String): Call<MainInfo>
 
 
 

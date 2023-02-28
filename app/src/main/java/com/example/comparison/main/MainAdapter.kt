@@ -41,6 +41,7 @@ class MainAdapter(val context: Context, var dataList: List<MainInfo>) : Recycler
                 itemClick?.onItemClick(it, position)
                 Log.e("item click!!!", "position: $position, datas: ${dataList[position]}")
 
+
             })
         }
         // 아이템 롱클릭 - 제품 삭제
