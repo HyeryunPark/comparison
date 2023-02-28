@@ -1,5 +1,6 @@
 package com.example.comparison.network
 
+import com.example.comparison.database.MainInfo
 import com.example.comparison.main.MainData
 import com.example.comparison.main.PostData
 import okhttp3.ResponseBody
@@ -16,8 +17,9 @@ interface RetrofitInterface {
     fun getPosts(@Path("post") post: String): Call<PostData>
 
 //    https://port-0-node-3a9t2ble0n86ua.sel3.cloudtype.app/crawl?pcode='상품번호'
+//    https://port-0-node-3a9t2ble0n86ua.sel3.cloudtype.app/crawl?p_url='상품 url'
     @GET("crawl")
-    fun getData(@Query("pcode") p_code: String): Call<PostData>
+    fun getData(@Query("pcode") p_code: Int): Call<MainInfo>
 
 
 

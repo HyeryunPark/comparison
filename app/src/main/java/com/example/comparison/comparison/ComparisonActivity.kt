@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.comparison.*
 import com.example.comparison.base.BaseActivity
 import com.example.comparison.databinding.ActivityComparisonBinding
@@ -39,14 +40,17 @@ class ComparisonActivity : BaseActivity(), ComparisonContract.View {
         initViewPager()
 
         // intent 로 넘어온 값
-        /*       datas = intent.getSerializableExtra("data") as MainData
-               Log.e("인텐트 값 넘어왔니", datas.toString())
-               binding.tvName.text = datas.name
-               binding.tvPrice.text = datas.price.toString()*/
+        datas = intent.getSerializableExtra("data") as MainData
+        Log.e("인텐트 값 넘어왔니", datas.toString())
+        binding.tvName.text = datas.name
+        binding.tvPrice.text = datas.price.toString()
 
-        val price = intent.getStringExtra("price")
+/*        val price = intent.getStringExtra("price")
+        val img = intent.getStringExtra("img")
         Log.e("인텐트 값 price : ", price.toString())
+        Log.e("인텐트 값 img : ", img.toString())
         binding.tvPrice.text = price
+        Glide.with(this).load(img).into(binding.ivComparison)*/
 
 
     }

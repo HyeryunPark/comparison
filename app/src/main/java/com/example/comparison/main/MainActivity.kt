@@ -11,15 +11,20 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.comparison.R
 import com.example.comparison.WebviewActivity
 import com.example.comparison.base.BaseActivity
 import com.example.comparison.comparison.ComparisonActivity
+import com.example.comparison.database.MainDao
+import com.example.comparison.database.MainDatabase
+import com.example.comparison.database.MainInfo
 import com.example.comparison.databinding.ActivityMainBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity(), MainContract.View {
 
@@ -39,6 +44,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     private lateinit var rotateForward: Animation
     private lateinit var rotateBackward: Animation
 
+    private var dataList = listOf<MainInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // setTheme: android12 이전 splash screen
@@ -54,11 +60,15 @@ class MainActivity : BaseActivity(), MainContract.View {
 
         mainPresenter.setView(this)
 
-        setFloatingButton()
+        // DB
+        mainPresenter.setDatabase(this)
 
+        setFloatingButton()
 
         // recyclerview
         initRecyclerView()
+        itemClick()
+
 
     }
 
@@ -67,24 +77,13 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private fun initRecyclerView() {
-        adapter = MainAdapter()
-        adapter.datas.apply {
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름1", price = 200))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름2", price = 30000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름3", price = 40000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름4", price = 5000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름5", price = 6000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름1", price = 200))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름2", price = 30000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름3", price = 40000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름4", price = 5000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름5", price = 6000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름1", price = 200))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름2", price = 30000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름3", price = 40000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름4", price = 5000))
-            add(MainData(img = R.drawable.ic_image_not_supported_24, name = "이름5", price = 6000))
+        adapter = MainAdapter(this, dataList)
 
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = MainDatabase.buildDatabase(this@MainActivity)
+            dataList = db?.MainDao()?.loadAll()!!
+            adapter.dataList = dataList
+            Log.e("db", db.MainDao().loadAll().toString())
         }
         binding.rvMain.layoutManager = GridLayoutManager(this@MainActivity, 3)
         binding.rvMain.adapter = this@MainActivity.adapter
@@ -104,16 +103,16 @@ class MainActivity : BaseActivity(), MainContract.View {
 
         // 플로팅버튼 클릭
         fab.setOnClickListener {
+//            Toast.makeText(this, "fab clicked", Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(this, "fab clicked", Toast.LENGTH_SHORT).show()
 
             animateFab()
 
         }
         // 플로팅버튼 클릭 이벤트 -> fb1 : webView 띄우기
         fb1.setOnClickListener {
+//            Toast.makeText(this, "fab1 clicked", Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(this, "fab1 clicked", Toast.LENGTH_SHORT).show()
 
             animateFab()
 
@@ -123,8 +122,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
         // 플로팅버튼 클릭 이벤트 -> fb2 : url 입력 Dialog 띄우기
         fb2.setOnClickListener {
+//            Toast.makeText(this, "fab2 clicked", Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(this, "fab2 clicked", Toast.LENGTH_SHORT).show()
 
             animateFab()
 
@@ -137,14 +136,14 @@ class MainActivity : BaseActivity(), MainContract.View {
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
 
                     Log.e("사용자가 입력한 url: ", et.text.toString())
-//                    mainPresenter.loadData(et.text.toString())
-
+                    mainPresenter.loadData(et.text.toString().toInt())
 
                 })
             builder.show()
         }
 
     }
+
     private fun animateFab() {
         if (isFabOpen) {
 
@@ -169,10 +168,47 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    override fun sendDataNextView(price: String) {
+    override fun sendDataNextView(price: String, img: String) {
         val intentPrice = Intent(this, ComparisonActivity::class.java)
         intentPrice.putExtra("price", price)
+        intentPrice.putExtra("img", img)
         startActivity(intentPrice)
+
+    }
+
+    // recyclerview item - long click 이벤트 처리 (아이템 삭제)
+    private fun itemClick() {
+
+        adapter.itemClick = object : MainAdapter.itemClickListener {
+
+            override fun onItemClick(view: View, position: Int) {
+                val intent = Intent(this@MainActivity, ComparisonActivity::class.java)
+//                intent.putExtra("data", adapter.datas[position])
+                startActivity(intent)
+
+//                Log.e("item click", "datas[$position]${adapter.datas[position]}")
+            }
+
+            override fun onDeleteClick(view: View, position: Int) {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("삭제하시겠습니까?")
+                    .setPositiveButton("네", object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+
+//                            adapter.datas.removeAt(position)
+                            adapter.notifyDataSetChanged()
+
+                        }
+                    })
+                    .setNegativeButton("아니요", object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                        }
+                    })
+                    .create()
+                    .show()
+            }
+
+        }
 
     }
 
