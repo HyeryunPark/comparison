@@ -1,6 +1,7 @@
 package com.example.comparison.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -16,4 +17,6 @@ interface MainDao {
     @Query("DELETE FROM product_info")
     fun deleteAll()
 
+    @Delete
+    fun delete(mainInfo: MainInfo)
 }

@@ -195,14 +195,15 @@ class MainActivity : BaseActivity(), MainContract.View {
 
             }
 
-            override fun onDeleteClick(view: View, position: Int) {
+            override fun onItemLongClick(view: View, position: Int) {
                 AlertDialog.Builder(this@MainActivity)
                     .setTitle("삭제하시겠습니까?")
                     .setPositiveButton("네", object : DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
-
+                            mainPresenter.deleteData(mainInfo = adapter.dataList[position])
+                            Log.e("데이터삭제하기", adapter.dataList[position].toString())
 //                            adapter.datas.removeAt(position)
-                            adapter.notifyDataSetChanged()
+                            adapter.notifyItemRemoved(position)
 
                         }
                     })

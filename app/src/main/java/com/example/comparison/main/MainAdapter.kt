@@ -18,7 +18,7 @@ class MainAdapter(val context: Context, var dataList: List<MainInfo>) : Recycler
     // 아이템 클릭 리스너 인터페이스
     interface itemClickListener {
         fun onItemClick(view: View, position: Int)
-        fun onDeleteClick(view: View, position: Int)
+        fun onItemLongClick(view: View, position: Int)
     }
 
     var itemClick: itemClickListener? = null
@@ -47,7 +47,7 @@ class MainAdapter(val context: Context, var dataList: List<MainInfo>) : Recycler
         // 아이템 롱클릭 - 제품 삭제
         if (itemClick != null) {
             holder.itemView.setOnLongClickListener(View.OnLongClickListener {
-                itemClick?.onDeleteClick(it, position)
+                itemClick?.onItemLongClick(it, position)
                 Log.e("item long click!!!", position.toString())
 
                 return@OnLongClickListener true

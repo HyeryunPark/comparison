@@ -124,6 +124,18 @@ class MainPresenter : MainContract.Presenter {
         CoroutineScope(Dispatchers.IO).launch {
             // db에 데이터 저장하기
             db.MainDao().insert(mainInfo = mainInfo)
+            Log.e("db insert [SUCCESS]", mainInfo.name)
         }
+    }
+
+    override fun deleteData(mainInfo: MainInfo) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            // db에 저장된 데이터 삭제
+            db.MainDao().delete(mainInfo = mainInfo)
+            Log.e("db delete [SUCCESS]", mainInfo.name)
+
+        }
+
     }
 }
