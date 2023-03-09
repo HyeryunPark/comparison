@@ -3,6 +3,7 @@ package com.example.comparison.network
 import com.example.comparison.database.MainInfo
 import com.example.comparison.main.MainData
 import com.example.comparison.main.PostData
+import com.example.comparison.model.GetMainData
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -21,7 +22,7 @@ interface RetrofitInterface {
 /*    @GET("crawl")
     fun getData(@Query("pcode") p_code: Int): Call<MainInfo>*/
     @GET("crawl")
-    fun getDataInfo(@Query("p_url") p_url: String): Call<MainInfo>
+    fun getDataInfo(@Query("p_url") p_url: String): Call<GetMainData>
 
 /*
     // 상품을 추가할때 서버에서 상품의 간단한 정보를 받아오는 메서드

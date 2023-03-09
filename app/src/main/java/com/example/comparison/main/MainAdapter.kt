@@ -25,6 +25,10 @@ class MainAdapter(val context: Context, var dataList: MutableList<MainInfo>) : R
     // 아이템 추가
     fun addItem(item: MainInfo){
         dataList.add(item)
+
+//        notifyDataSetChanged()
+        notifyItemInserted(0)
+        notifyItemRangeInserted(0, itemCount)
     }
     // 아이템 삭제
     fun removeItem(position: Int){

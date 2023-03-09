@@ -13,7 +13,8 @@ data class MainInfo(
     @SerializedName("pcode")
     val p_code: Int,
     @ColumnInfo
-    val price: String,
+    val price: Int,
     @ColumnInfo
     val img_src: String
+
 )

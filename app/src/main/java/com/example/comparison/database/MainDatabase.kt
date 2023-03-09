@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [MainInfo::class], version = 2)
+@Database(entities = [MainInfo::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class MainDatabase : RoomDatabase() {
     abstract fun MainDao(): MainDao
 
@@ -20,7 +22,7 @@ abstract class MainDatabase : RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(
                         context, MainDatabase::class.java, "comparison"
                     )
-                        .addMigrations(migration_1_2)
+//                        .addMigrations(migration_2_3)
                         .build()
 
                 }
@@ -36,8 +38,9 @@ abstract class MainDatabase : RoomDatabase() {
         //Migration version 이 1에서 2로 변경 되었다는 의미
         val migration_1_2 = object: Migration(1,2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                //만약, 테이블이 추가 되었다면 어떤 테이블이 추가 되었는지 알려주는 query문장이 필요
+                //만약, 테이블이 추가 되었다면 어떤 테이블이 추가 되었는지 알려주는 query 문장 필요
 //                database.execSQL("CREATE TABLE 'REVIEW' ('id' INTEGER, 'review' TEXT, " + "PRIMARY KEY('id'))")
+//                database.execSQL("ALTER TABLE 'product_info' ADD COLUMN 'prices' STRING")
             }
         }
 

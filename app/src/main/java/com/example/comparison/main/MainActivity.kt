@@ -22,10 +22,12 @@ import com.example.comparison.database.MainDao
 import com.example.comparison.database.MainDatabase
 import com.example.comparison.database.MainInfo
 import com.example.comparison.databinding.ActivityMainBinding
+import com.example.comparison.model.PricesData
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 class MainActivity : BaseActivity(), MainContract.View {
 
@@ -46,6 +48,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     private lateinit var rotateBackward: Animation
 
     private var dataList = mutableListOf<MainInfo>()
+    val prices_data : ArrayList<PricesData>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // setTheme: android12 이전 splash screen
@@ -177,7 +181,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    override fun sendDataNextView(img: String, name: String, price: String) {
+    override fun sendDataNextView(img: String, name: String, price: Int) {
         val intentData = Intent(this, ComparisonActivity::class.java)
         intentData.putExtra("img", img)
         intentData.putExtra("name", name)
@@ -197,6 +201,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                 intent.putExtra("img", adapter.dataList[position].img_src)
                 intent.putExtra("name", adapter.dataList[position].name)
                 intent.putExtra("price", adapter.dataList[position].price)
+
                 startActivity(intent)
 
             }
@@ -259,6 +264,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun onRestart() {
         Log.e("lifecycle", "onRestart")
+
         super.onRestart()
     }
 }

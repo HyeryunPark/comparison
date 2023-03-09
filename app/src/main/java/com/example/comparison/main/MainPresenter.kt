@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.comparison.database.MainDatabase
 import com.example.comparison.database.MainInfo
+import com.example.comparison.model.GetMainData
 import com.example.comparison.network.RetrofitClient
 import com.example.comparison.network.RetrofitInterface
 import com.google.gson.Gson
@@ -14,13 +15,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainPresenter : MainContract.Presenter {
 
     private var mainView: MainContract.View? = null
     private lateinit var db: MainDatabase
 
-    private var mainAdapter: MainAdapter?=null
+    private var mainAdapter: MainAdapter? = null
 
 
     override fun setView(view: MainContract.View) {
@@ -31,7 +34,8 @@ class MainPresenter : MainContract.Presenter {
         mainView = null
     }
 
-    /*override fun loadData(p_code: Int) {
+/*
+    override fun loadData(p_code: Int) {
         val retrofit: Retrofit = RetrofitClient.getInstance()
         val retrofitInterface: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
 
@@ -42,7 +46,7 @@ class MainPresenter : MainContract.Presenter {
 
                     Log.e("onResponse 성공: ", Gson().toJson(response.body()))
 
-                    *//* val body = response.body()
+                     val body = response.body()
                      body?.let {
                          for (i in 0 until body.size) {
                              var dataList: PostData = PostData()
@@ -57,7 +61,7 @@ class MainPresenter : MainContract.Presenter {
                              Log.e("get dataList: ", dataList.name)
                              addData(mainInfo = addDataList)
                          }
-                     }*//*
+                     }
 //                    mainView!!.sendDataNextView(price = response.body()?.price.toString(), img = response.body()?.img_src.toString())
                     addData(response.body()!!)
 
@@ -73,24 +77,42 @@ class MainPresenter : MainContract.Presenter {
             }
 
         })
-    }*/
+    }
+*/
 
     override fun loadData(p_url: String) {
         val retrofit: Retrofit = RetrofitClient.getInstance()
         val retrofitInterface: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
 
-        retrofitInterface.getDataInfo(p_url).enqueue(object : Callback<MainInfo> {
-            override fun onResponse(call: Call<MainInfo>, response: Response<MainInfo>) {
+        retrofitInterface.getDataInfo(p_url).enqueue(object : Callback<GetMainData> {
+            override fun onResponse(call: Call<GetMainData>, response: Response<GetMainData>) {
                 if (response.isSuccessful) {
                     // onResponse 통신 성공시 Callback ( 메인스레드에서 작업하는 부분 (UI 작업 가능))
                     Log.e("onResponse 성공: ", Gson().toJson(response.body()))
 
-                    addData(response.body()!!)
-                    mainAdapter?.addItem(response.body()!!)
+                    val now = System.currentTimeMillis()
+                    val date = SimpleDateFormat("yyyyMMdd", Locale.KOREAN).format(now)
+                    Log.e("오늘 날짜", date)
+
+                    val body = response.body()
+                    //  body.prices[0] : 가장 최근 날짜와 최저가
+                    Log.e("body.prices[0]", body!!.prices!![0].toString())
+                    Log.e("body.prices[0].low_price", body.prices!![0].low_price)
+
+                    val addData: MainInfo = MainInfo(
+                        p_code = body.p_code,
+                        img_src = body.img,
+                        name = body.name,
+                        price = body.prices[0].low_price.toInt()
+                    )
+                    Log.e("addData",addData.toString())
+
+                    addData(addData)
+                    mainAdapter?.addItem(addData)
                     mainView?.sendDataNextView(
-                        img = response.body()!!.img_src,
-                        name = response.body()!!.name,
-                        price = response.body()!!.price
+                        img = addData.img_src,
+                        name = addData.name,
+                        price = addData.price
                     )
 
                 } else {
@@ -99,7 +121,7 @@ class MainPresenter : MainContract.Presenter {
                 }
             }
 
-            override fun onFailure(call: Call<MainInfo>, t: Throwable) {
+            override fun onFailure(call: Call<GetMainData>, t: Throwable) {
                 // onFailure 통신 실패시 Callback ( 인터넷 끊김, 예외 발생 등 시스템적인 이유 )
                 Log.e("onFailure: ", t.toString())
             }

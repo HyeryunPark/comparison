@@ -42,12 +42,12 @@ class ComparisonActivity : BaseActivity(), ComparisonContract.View {
         // intent 로 넘어온 값
         val img = intent.getStringExtra("img")
         val name = intent.getStringExtra("name")
-        val price = intent.getStringExtra("price")
-        Log.e("넘어온 intent", img.toString())
+        val price = intent.getIntExtra("price",0)
+        Log.e("넘어온 intent name", name.toString())
         Glide.with(this).load(img).into(binding.ivComparison)
         binding.tvName.text = name
-        binding.tvPrice.text = price
-
+        binding.tvPrice.text = price.toString()
+        Log.e("넘어온 price", price.toString())
     }
 
     override fun onDestroy() {
