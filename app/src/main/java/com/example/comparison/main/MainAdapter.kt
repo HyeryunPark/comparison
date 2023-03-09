@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.comparison.R
 import com.example.comparison.database.MainInfo
 
-class MainAdapter(val context: Context, var dataList: List<MainInfo>) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+class MainAdapter(val context: Context, var dataList: MutableList<MainInfo>) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 //    var datas = mutableListOf<MainData>()
 
     // 아이템 클릭 리스너 인터페이스
@@ -20,9 +20,18 @@ class MainAdapter(val context: Context, var dataList: List<MainInfo>) : Recycler
         fun onItemClick(view: View, position: Int)
         fun onItemLongClick(view: View, position: Int)
     }
-
     var itemClick: itemClickListener? = null
 
+    // 아이템 추가
+    fun addItem(item: MainInfo){
+        dataList.add(item)
+    }
+    // 아이템 삭제
+    fun removeItem(position: Int){
+        dataList.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeRemoved(position, itemCount)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
 //        val binding = ItemMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -69,10 +78,10 @@ class MainAdapter(val context: Context, var dataList: List<MainInfo>) : Recycler
         private val itemTvPrice: TextView = itemView.findViewById(R.id.item_tv_price)
 
         fun bind(item: MainInfo) {
-            Log.e("img_src",item.img_src)
+//            Log.e("img_src",item.img_src)
             Glide.with(context as MainActivity).load(item.img_src).into(itemIv)
             itemTvName.text = item.name
-            itemTvPrice.text = item.price
+//            itemTvPrice.text = item.price
 
             /*itemView.setOnClickListener {
                 Log.e("item click!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", item.name + ", " + item.price.toString())

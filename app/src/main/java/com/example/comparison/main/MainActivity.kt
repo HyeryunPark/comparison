@@ -8,6 +8,7 @@ import android.text.InputType
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
@@ -44,7 +45,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     private lateinit var rotateForward: Animation
     private lateinit var rotateBackward: Animation
 
-    private var dataList = listOf<MainInfo>()
+    private var dataList = mutableListOf<MainInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // setTheme: android12 이전 splash screen
@@ -81,9 +82,9 @@ class MainActivity : BaseActivity(), MainContract.View {
 
         CoroutineScope(Dispatchers.IO).launch {
             val db = MainDatabase.buildDatabase(this@MainActivity)
-            dataList = db?.MainDao()?.loadAll()!!
+            dataList = (db?.MainDao()?.loadAll() as MutableList<MainInfo>?)!!
             adapter.dataList = dataList
-            Log.e("db", db.MainDao().loadAll().toString())
+            Log.e("db", db?.MainDao()?.loadAll().toString())
         }
         binding.rvMain.layoutManager = GridLayoutManager(this@MainActivity, 3)
         binding.rvMain.adapter = this@MainActivity.adapter
@@ -139,10 +140,15 @@ class MainActivity : BaseActivity(), MainContract.View {
                     Log.e("splitUrl[3] :", p_url)
                     Log.e("사용자가 입력한 url: ", et.text.toString())
 //                    mainPresenter.loadData(et.text.toString().toInt())
+                    // 모바일에서 공유하면 p_url=, 웹에서 공유하면 pcode= -> 구분하기
                     mainPresenter.loadData(p_url)
 
                 })
-            builder.show()
+
+            builder
+                .show()
+                .window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+
         }
 
     }
@@ -202,9 +208,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
                             mainPresenter.deleteData(mainInfo = adapter.dataList[position])
                             Log.e("데이터삭제하기", adapter.dataList[position].toString())
-//                            adapter.datas.removeAt(position)
-                            adapter.notifyItemRemoved(position)
-
+                            adapter.removeItem(position = position)
                         }
                     })
                     .setNegativeButton("아니요", object : DialogInterface.OnClickListener {
@@ -232,6 +236,31 @@ class MainActivity : BaseActivity(), MainContract.View {
         mainPresenter.dropView()
     }
 
+    override fun onStart() {
+        Log.e("lifecycle", "onStart")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Log.e("lifecycle", "onResume")
+
+        super.onResume()
+    }
+
+    override fun onPause() {
+        Log.e("lifecycle", "onPause")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.e("lifecycle", "onStop")
+        super.onStop()
+    }
+
+    override fun onRestart() {
+        Log.e("lifecycle", "onRestart")
+        super.onRestart()
+    }
 }
 
 

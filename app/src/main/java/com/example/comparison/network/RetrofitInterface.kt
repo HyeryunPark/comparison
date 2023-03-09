@@ -21,8 +21,13 @@ interface RetrofitInterface {
 /*    @GET("crawl")
     fun getData(@Query("pcode") p_code: Int): Call<MainInfo>*/
     @GET("crawl")
-    fun getData(@Query("p_url") p_url: String): Call<MainInfo>
+    fun getDataInfo(@Query("p_url") p_url: String): Call<MainInfo>
 
+/*
+    // 상품을 추가할때 서버에서 상품의 간단한 정보를 받아오는 메서드
+    @GET("add")
+    fun getData(@Query("p_url") p_url: String): Call<MainInfo>
+*/
 
 
 

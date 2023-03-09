@@ -20,6 +20,8 @@ class MainPresenter : MainContract.Presenter {
     private var mainView: MainContract.View? = null
     private lateinit var db: MainDatabase
 
+    private var mainAdapter: MainAdapter?=null
+
 
     override fun setView(view: MainContract.View) {
         mainView = view
@@ -77,18 +79,19 @@ class MainPresenter : MainContract.Presenter {
         val retrofit: Retrofit = RetrofitClient.getInstance()
         val retrofitInterface: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
 
-        retrofitInterface.getData(p_url).enqueue(object : Callback<MainInfo> {
+        retrofitInterface.getDataInfo(p_url).enqueue(object : Callback<MainInfo> {
             override fun onResponse(call: Call<MainInfo>, response: Response<MainInfo>) {
                 if (response.isSuccessful) {
                     // onResponse 통신 성공시 Callback ( 메인스레드에서 작업하는 부분 (UI 작업 가능))
                     Log.e("onResponse 성공: ", Gson().toJson(response.body()))
 
                     addData(response.body()!!)
-                    /*mainView?.sendDataNextView(
+                    mainAdapter?.addItem(response.body()!!)
+                    mainView?.sendDataNextView(
                         img = response.body()!!.img_src,
                         name = response.body()!!.name,
                         price = response.body()!!.price
-                    )*/
+                    )
 
                 } else {
                     // onResponse 가 무조건 성공 응답이 아니기에 확인 필요 (응답 코드 3xx, 4xx 호출)
