@@ -97,7 +97,7 @@ class MainPresenter : MainContract.Presenter {
                     val body = response.body()
                     //  body.prices[0] : 가장 최근 날짜와 최저가
                     Log.e("body.prices[0]", body!!.prices!![0].toString())
-                    Log.e("body.prices[0].low_price", body.prices!![0].low_price)
+                    Log.e("body.prices[0].low_price", body.prices!![0].low_price.toString())
 
                     val addData: MainInfo = MainInfo(
                         p_code = body.p_code,
@@ -109,11 +109,12 @@ class MainPresenter : MainContract.Presenter {
 
                     addData(addData)
                     mainAdapter?.addItem(addData)
-                    mainView?.sendDataNextView(
-                        img = addData.img_src,
-                        name = addData.name,
-                        price = addData.price
-                    )
+//                    mainView?.sendDataNextView(
+//                        img = addData.img_src,
+//                        name = addData.name,
+//                        price = addData.price,
+//                        prices =
+//                    )
 
                 } else {
                     // onResponse 가 무조건 성공 응답이 아니기에 확인 필요 (응답 코드 3xx, 4xx 호출)

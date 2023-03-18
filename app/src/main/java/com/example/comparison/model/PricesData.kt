@@ -8,5 +8,5 @@ data class PricesData(
     @SerializedName("date")
     val date: Int,
     @SerializedName("low_price")
-    val low_price: String = "",
+    val low_price: Int,
 ) : Serializable

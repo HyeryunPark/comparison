@@ -181,11 +181,12 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    override fun sendDataNextView(img: String, name: String, price: Int) {
+    override fun sendDataNextView(img: String, name: String, price: Int, prices: ArrayList<String>) {
         val intentData = Intent(this, ComparisonActivity::class.java)
         intentData.putExtra("img", img)
         intentData.putExtra("name", name)
         intentData.putExtra("price", price)
+        intentData.putExtra("prices", prices)
         startActivity(intentData)
 
     }

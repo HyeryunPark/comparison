@@ -14,7 +14,7 @@ interface MainContract {
     interface View : BaseView {
 
         fun setFloatingButton()
-        fun sendDataNextView(img: String, name: String, price: Int)
+        fun sendDataNextView(img: String, name: String, price: Int, prices: ArrayList<String>)
     }
 
     interface Presenter : BasePresenter<View> {
