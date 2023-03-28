@@ -18,6 +18,7 @@ import com.example.comparison.R
 import com.example.comparison.WebviewActivity
 import com.example.comparison.base.BaseActivity
 import com.example.comparison.comparison.ComparisonActivity
+import com.example.comparison.comparison.Tab1Fragment
 import com.example.comparison.database.MainDao
 import com.example.comparison.database.MainDatabase
 import com.example.comparison.database.MainInfo
@@ -199,10 +200,10 @@ class MainActivity : BaseActivity(), MainContract.View {
             override fun onItemClick(view: View, position: Int) {
                 val intent = Intent(this@MainActivity, ComparisonActivity::class.java)
                 // intent.putExtra("data", adapter.datas[position])
+                intent.putExtra("p_code", adapter.dataList[position].p_code)
                 intent.putExtra("img", adapter.dataList[position].img_src)
                 intent.putExtra("name", adapter.dataList[position].name)
                 intent.putExtra("price", adapter.dataList[position].price)
-
                 startActivity(intent)
 
             }

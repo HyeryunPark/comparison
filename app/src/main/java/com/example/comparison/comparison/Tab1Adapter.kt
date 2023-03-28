@@ -7,10 +7,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.comparison.R
+import com.example.comparison.model.PricesData
+import java.text.DecimalFormat
 
-class Tab1Adapter : RecyclerView.Adapter<Tab1Adapter.ViewHolder>() {
+class Tab1Adapter(private val list: MutableList<PricesData>) :
+    RecyclerView.Adapter<Tab1Adapter.ViewHolder>() {
 
-    private val list = listOf<Int>(1,2,3,4,56,7,8,9,45,2,6,5,7,8,9,8,7,8,9,8)
+    fun addItem(item: PricesData) {
+        if (list != null) {
+            list.add(item)
+            notifyDataSetChanged()
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -22,24 +30,31 @@ class Tab1Adapter : RecyclerView.Adapter<Tab1Adapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.bind(list[position])
-
     }
 
     override fun getItemCount(): Int {
-
         Log.e("Tab1Adapter", "getItemCount ${list.size}")
 
         return list.size
-
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val tab1_tv_delivery: TextView = view.findViewById(R.id.tab1_tv_delivery)
+        private val tab1_tv_date: TextView = view.findViewById(R.id.tab1_tv_date)
         private val tab1_tv_price: TextView = view.findViewById(R.id.tab1_tv_price)
 
-        fun bind(position: Int) {
-            tab1_tv_delivery.text = "Text $position"
-            tab1_tv_price.text = "Text $position"
+        fun bind(item: PricesData) {
+//            tab1_tv_date.text = "Text $position"
+//            tab1_tv_price.text = "Text $position"
+            val year = item.date.toString().substring(0, 4)
+            val month = item.date.toString().substring(4, 6)
+            val day = item.date.toString().substring(6, 8)
+            val dateToString = year + "년 " + month + "월 " + day + "일"
+
+            val priceFormat = DecimalFormat("#,###")
+            tab1_tv_date.text = dateToString
+            tab1_tv_price.text = priceFormat.format(item.low_price)
+
+
         }
     }
 }

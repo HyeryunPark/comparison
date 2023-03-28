@@ -10,20 +10,20 @@
         android:orientation="horizontal"
         android:padding="4dp">
 
-        <ImageView
+<!--        <ImageView
             android:id="@+id/tab1_iv_logo"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_image_not_supported_24" />
+            android:src="@drawable/ic_image_not_supported_24" />-->
 
         <TextView
-            android:id="@+id/tab1_tv_delivery"
+            android:id="@+id/tab1_tv_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="배송비"
+            android:text="날짜"
             android:textSize="16sp" />
 
         <TextView
@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="가격"
+            android:text="최저가"
             android:textSize="16sp" />
     </LinearLayout>
 

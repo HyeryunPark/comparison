@@ -85,7 +85,7 @@ class MainAdapter(val context: Context, var dataList: MutableList<MainInfo>) : R
 //            Log.e("img_src",item.img_src)
             Glide.with(context as MainActivity).load(item.img_src).into(itemIv)
             itemTvName.text = item.name
-//            itemTvPrice.text = item.price
+            itemTvPrice.text = item.price.toString()
 
             /*itemView.setOnClickListener {
                 Log.e("item click!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", item.name + ", " + item.price.toString())

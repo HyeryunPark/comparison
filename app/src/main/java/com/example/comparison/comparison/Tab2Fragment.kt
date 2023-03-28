@@ -7,47 +7,86 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import com.example.comparison.comparison.model.PricesViewModel
 import com.example.comparison.databinding.FragmentTab2Binding
+import com.example.comparison.model.GetMainData
+import com.example.comparison.model.PricesData
+import com.example.comparison.network.RetrofitClient
+import com.example.comparison.network.RetrofitInterface
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 // Tab2Fragment.kt : 가격변동 탭(price fluctuations)
+
 class Tab2Fragment : Fragment() {
+    private val TAG = "Tab2Fragment"
+
     private var _binding: FragmentTab2Binding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: PricesViewModel by activityViewModels()
+
+    private lateinit var lineChart: LineChart
+
     // 데이터 생성 - 추후 삭제
-    private val dataList : ArrayList<Tab2Data> = arrayListOf(
-        Tab2Data(20230306, 14200),
-        Tab2Data(20230307, 14200),
-        Tab2Data(20230308, 14200),
-        Tab2Data(20230309, 14200),
-        Tab2Data(20230310, 14200),
-        Tab2Data(20230311, 14200)
-    )
+   /* private val dataList: MutableList<PricesData> = mutableListOf(
+        PricesData(20231111, 11111),
+        PricesData(20232222, 22222),
+        PricesData(20233333, 33333)
+    )*/
+    private var dataList = mutableListOf<PricesData>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val p_code = requireActivity().intent.getIntExtra("p_code", 0)
+        Log.e("$TAG - pCode", p_code.toString())
+
+//        loadData(p_code = p_code)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentTab2Binding.inflate(inflater, container, false)
 
-        val lineChart: LineChart = _binding!!.lineChart
-
-        initLineChart(lineChart)
+//        val lineChart: LineChart = _binding!!.lineChart
+        lineChart = _binding!!.lineChart
 
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // viewModel
+//        viewModel = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory()).get(PricesViewModel::class.java)
+
+        viewModel.itemList.observe(viewLifecycleOwner, Observer {
+            Log.e("viewModel-tab2fragment-it", it.toString())
+
+            dataList.addAll(it)
+            Log.e("viewModel-tab2fragment-dataList", dataList.toString())
+
+            initLineChart(lineChart)
+        })
+
+    }
+
+
     // line chart 초기셋팅
     private fun initLineChart(lineChart: LineChart) {
-        Log.e("initLineChart", "차트 초기세팅")
+        Log.e(TAG, "initLineChart")
 
         // 차트 전체 셋팅
 
@@ -84,8 +123,8 @@ class Tab2Fragment : Fragment() {
             textSize = 12f  // 텍스트 크기 (float 형으로 해야함)
             setDrawGridLines(false) // 배경 그리드 라인 세팅
             granularity = 1f    // x축 데이터 표시 간격
-            axisMinimum = 0f    // x축 데이터의 최소 표시값
-            axisMaximum = 4f    // x축 데이터의 최대 표시값
+//            axisMinimum = 0f    // x축 데이터의 최소 표시값
+//            axisMaximum = 4f    // x축 데이터의 최대 표시값
 //            valueFormatter    // (MM.DD) 월.일 형태로 바꾸기
             valueFormatter = XAxisCustomFormatter(changeDateText(dataList))
 
@@ -112,24 +151,69 @@ class Tab2Fragment : Fragment() {
         }
     }
 
-
-    // 20230306 형태의 Int 를 03-06 형태의 String 으로 변환
-    private fun changeDateText(dataList: List<Tab2Data>): List<String> {
+    // 20230306 형태의 Int 를 0306 형태의 String 으로 변환
+    private fun changeDateText(dataList: List<PricesData>): List<String> {
         val dataTextList = ArrayList<String>()
         for (i in dataList.indices) {
             val dateText = dataList[i].date.toString().substring(4 until 8)
-            Log.e("dateText", dateText)
+//            Log.e("date", dataList[i].date.toString())
+//            Log.e("dateText", dateText)
             dataTextList.add((dateText))
         }
         return dataTextList
     }
 
     // valueFormatter 에 적용시키기 위해서 ValueFormatter 추상 클래스를 상속해서 사용
-    class XAxisCustomFormatter(val xAxisData: List<String>) : ValueFormatter() {
+    class XAxisCustomFormatter(private val xAxisData: List<String>) : ValueFormatter() {
 
         override fun getFormattedValue(value: Float): String {
+
             return xAxisData[(value).toInt()]
         }
+    }
+
+    // 상품의 p_code 를 서버로 보내 상품 정보(날짜, 최저가)를 받아오는 함수
+    private fun loadData(p_code: Int) {
+        val retrofit: Retrofit = RetrofitClient.getInstance()
+        val retrofitInterface: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
+
+        retrofitInterface.getDataInfoPCode(p_code = p_code)
+            .enqueue(object : Callback<GetMainData> {
+                override fun onResponse(call: Call<GetMainData>, response: Response<GetMainData>) {
+                    if (response.isSuccessful) {
+                        // onResponse 통신 성공시 Callback ( 메인스레드에서 작업하는 부분 (UI 작업 가능))
+                        Log.e("onResponse 성공: ", Gson().toJson(response.body()))
+
+                        val body = response.body()
+                        body.let {
+                            for (i in body!!.prices.indices) {
+                                val date = body.prices[i].date
+                                val low_price = body.prices[i].low_price
+
+                                val addData = PricesData(
+                                    date = date,
+                                    low_price = low_price
+                                )
+
+                                dataList.add(addData)
+                                Log.e("dataList", dataList.toString())
+                            }
+                        }
+
+                    } else {
+                        // onResponse 가 무조건 성공 응답이 아니기에 확인 필요 (응답 코드 3xx, 4xx 호출)
+                        Log.e("onResponse 실패: ", "")
+                    }
+                }
+
+                override fun onFailure(call: Call<GetMainData>, t: Throwable) {
+                    // onFailure 통신 실패시 Callback ( 인터넷 끊김, 예외 발생 등 시스템적인 이유 )
+                    Log.e("onFailure: ", t.toString())
+                }
+
+            })
+
 
     }
+
 }
