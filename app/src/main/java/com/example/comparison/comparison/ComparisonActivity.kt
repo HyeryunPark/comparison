@@ -1,14 +1,17 @@
 package com.example.comparison.comparison
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.comparison.*
 import com.example.comparison.base.BaseActivity
+import com.example.comparison.comparison.model.PricesViewModel
 import com.example.comparison.databinding.ActivityComparisonBinding
+import com.example.comparison.main.MainData
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -17,6 +20,9 @@ class ComparisonActivity : BaseActivity(), ComparisonContract.View {
     lateinit var binding: ActivityComparisonBinding
 
     private lateinit var comparisonPresenter: ComparisonContract.Presenter
+    private val viewModel: PricesViewModel by viewModels()
+
+    lateinit var datas: MainData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +39,21 @@ class ComparisonActivity : BaseActivity(), ComparisonContract.View {
 
         // ViewPager2
         initViewPager()
+
+        // intent 로 넘어온 값
+        val p_code = intent.getIntExtra("p_code",0)
+        val img = intent.getStringExtra("img")
+        val name = intent.getStringExtra("name")
+        val price = intent.getIntExtra("price",0)
+        Log.e("넘어온 intent name", name.toString())
+        Log.e("넘어온 p_code", p_code.toString())
+        Glide.with(this).load(img).into(binding.ivComparison)
+        binding.tvName.text = name
+        binding.tvPrice.text = price.toString()
+
+        // viewModel
+//        viewModel = ViewModelProvider(this).get(PricesViewModel::class.java)
+
 
     }
 
@@ -72,7 +93,7 @@ class ComparisonActivity : BaseActivity(), ComparisonContract.View {
             Log.e("TabLayoutMediator", "ViewPager position: $position")
             when (position) {
                 0 -> tab.text = "가격비교"
-                1 -> tab.text = "가격변동"
+                1 -> tab.text = "그래프"
                 2 -> tab.text = "상품후기"
             }
         }.attach()

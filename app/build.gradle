@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -31,7 +32,7 @@ android {
     }
 
     // ViewBinding 설정
-    buildFeatures{
+    buildFeatures {
         viewBinding true
         dataBinding true
     }
@@ -49,6 +50,32 @@ dependencies {
 
     // ViewPager2
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
     // MpAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    // ㄴ converter-gson 은 JSON 을 object 형식으로 변환하도록 도와준다.
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    implementation "com.squareup.okhttp3:okhttp:4.10.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    // splashscreen
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+
+    // Room
+    implementation "androidx.room:room-runtime:2.4.0"
+    kapt "androidx.room:room-compiler:2.4.0"
+    implementation "androidx.room:room-ktx:2.4.0"
+
+    //
+    implementation "androidx.fragment:fragment-ktx:1.5.6"
+
+
 }

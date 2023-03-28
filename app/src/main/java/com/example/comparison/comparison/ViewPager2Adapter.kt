@@ -11,13 +11,14 @@ class ViewPager2Adapter(fragmentActivity: FragmentActivity) :
     var fragments: ArrayList<Fragment> = ArrayList()
 
     override fun getItemCount(): Int {
-        Log.e("ViewPager2Adapter","getItemCount ${fragments.size}")
+//        Log.e("ViewPager2Adapter","getItemCount ${fragments.size}")
 
         return fragments.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        Log.e("ViewPager2Adapter","createFragment $position")
+//        Log.e("ViewPager2Adapter","createFragment $position")
+
         return fragments[position]
     }
 
